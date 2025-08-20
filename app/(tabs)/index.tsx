@@ -6,7 +6,8 @@ import {
   SafeAreaView, 
   TextInput,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,8 +27,14 @@ export default function ContactsScreen() {
   );
 
   const handleContactPress = (contact: Contact) => {
-    // In a real app, this would navigate to contact details
-    console.log('Selected contact:', contact.name);
+    // Show an alert with "hello" message when a contact is pressed
+    Alert.alert(
+      "Hello",
+      `You clicked on ${contact.name}!`,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
   };
 
   return (
