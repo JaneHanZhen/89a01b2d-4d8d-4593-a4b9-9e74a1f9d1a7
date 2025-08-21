@@ -14,10 +14,12 @@ import { Ionicons } from '@expo/vector-icons';
 import ContactCard from '../components/ContactCard';
 import { contacts } from '../data/contacts';
 import { Contact } from '../types/contacts';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ContactsScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { colors } = useTheme();
 
   // Filter contacts based on search query
   const filteredContacts = contacts.filter(contact => 
@@ -38,14 +40,15 @@ export default function ContactsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <StatusBar style="auto" />
       
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+      <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
+        <Ionicons name="search" size={20} color={colors.text} style={styles.searchIcon} />
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: colors.text }]}
           placeholder="Search contacts..."
+          placeholderTextColor={`${colors.text}80`}
           value={searchQuery}
           onChangeText={setSearchQuery}
           clearButtonMode="while-editing"
@@ -53,10 +56,10 @@ export default function ContactsScreen() {
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size="large" color="#3498db" style={styles.loader} />
+        <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
       ) : (
         <>
-          <Text style={styles.contactCount}>
+          <Text style={[styles.contactCount, { color: colors.text }]}>
             {filteredContacts.length} {filteredContacts.length === 1 ? 'Contact' : 'Contacts'}
           </Text>
           
@@ -70,8 +73,8 @@ export default function ContactsScreen() {
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
-                <Ionicons name="person-outline" size={60} color="#ccc" />
-                <Text style={styles.emptyText}>No contacts found</Text>
+                <Ionicons name="person-outline" size={60} color={`${colors.text}50`} />
+                <Text style={[styles.emptyText, { color: colors.text }]}>No contacts found</Text>
               </View>
             }
           />
@@ -84,12 +87,10 @@ export default function ContactsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
     borderRadius: 10,
     margin: 16,
     paddingHorizontal: 15,
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     fontSize: 14,
-    color: '#666',
     fontWeight: '500',
   },
   list: {
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 10,
     fontSize: 16,
-    color: '#666',
   },
   loader: {
     marginTop: 50,

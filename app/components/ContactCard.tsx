@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Contact } from '../types/contacts';
+import { useTheme } from '../context/ThemeContext';
 
 interface ContactCardProps {
   contact: Contact;
@@ -8,9 +9,11 @@ interface ContactCardProps {
 }
 
 const ContactCard: React.FC<ContactCardProps> = ({ contact, onPress }) => {
+  const { colors } = useTheme();
+  
   return (
     <TouchableOpacity 
-      style={styles.card}
+      style={[styles.card, { backgroundColor: colors.card }]}
       onPress={() => onPress?.(contact)}
       activeOpacity={0.7}
     >
@@ -19,9 +22,9 @@ const ContactCard: React.FC<ContactCardProps> = ({ contact, onPress }) => {
         style={styles.avatar} 
       />
       <View style={styles.info}>
-        <Text style={styles.name}>{contact.name}</Text>
-        <Text style={styles.contactInfo}>{contact.phone}</Text>
-        <Text style={styles.contactInfo}>{contact.email}</Text>
+        <Text style={[styles.name, { color: colors.text }]}>{contact.name}</Text>
+        <Text style={[styles.contactInfo, { color: `${colors.text}99` }]}>{contact.phone}</Text>
+        <Text style={[styles.contactInfo, { color: `${colors.text}99` }]}>{contact.email}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -31,7 +34,6 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     padding: 15,
-    backgroundColor: 'white',
     borderRadius: 10,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -58,11 +60,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 4,
-    color: '#333',
   },
   contactInfo: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 2,
   },
 });
